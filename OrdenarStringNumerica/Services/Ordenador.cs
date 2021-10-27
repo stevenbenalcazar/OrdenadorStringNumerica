@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OrdenarStringNumerica.Services
 {
@@ -12,32 +13,11 @@ namespace OrdenarStringNumerica.Services
             List<(double, T)> listaParaOrdenar = new List<(double, T)>();
             foreach (var item in lista)
             {
-                var count = 0;
-                var stringSeparada = item.Nome.ToCharArray();
-                double soma = 0;
+                double valorBruto = 0;
+                if (Regex.IsMatch(item.Nome, @"^\d+"))
+                    valorBruto = Convert.ToInt32(Regex.Replace(item.Nome, @"[^0-9](\w+)", ""));
 
-                for (int i = 0; i < item.Nome.Length; i++)
-                {
-                    if (Int32.TryParse(stringSeparada[i].ToString(), out int number))
-                        count++;
-                    else
-                        break;
-                }
-
-                int[] valorBruto = new int[count];
-
-                for (int i = 0; i < count; i++)
-                {
-                    if (Int32.TryParse(stringSeparada[i].ToString(), out int number))
-                        valorBruto[i] = number;
-                }
-                Array.Reverse(valorBruto);
-                for (int i = 0; i < valorBruto.Length; i++)
-                {
-                    soma += valorBruto[i] * Math.Pow(10, i);
-                }
-
-                listaParaOrdenar.Add((soma, item));
+                listaParaOrdenar.Add((valorBruto, item));
             }
 
             listaParaOrdenar = listaParaOrdenar.OrderBy(x => x.Item1 == 0)
@@ -47,7 +27,6 @@ namespace OrdenarStringNumerica.Services
             lista.Clear();
 
             listaParaOrdenar.ForEach(x => lista.Add(x.Item2));
-
         }
     }
 }
