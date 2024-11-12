@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenar Lista de Elementos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ordenar Lista de Elementos</h1>
+        <input type="text" id="itemInput" placeholder="Escribe un elemento (Ej: A22, 3, Bloco 2)">
+        <button onclick="agregarElemento()">Agregar Elemento</button>
+        <button onclick="ordenarLista()">Ordenar Lista</button>
+        
+        <h2>Lista de Elementos</h2>
+        <ul id="itemList"></ul>
+    </div>
+
+    <script>
+        // Array para almacenar los elementos
+        const lista = [];
+
+        // Función para agregar un elemento a la lista
+        function agregarElemento() {
+            const itemInput = document.getElementById("itemInput");
+            const itemName = itemInput.value.trim();
+            if (itemName) {
+                lista.push({ name: itemName });
+                itemInput.value = "";
+                mostrarLista();
+            }
+        }
+
+        // Función para mostrar la lista en la interfaz
+        function mostrarLista() {
+            const itemList = document.getElementById("itemList");
+            itemList.innerHTML = "";
+            lista.forEach(item => {
+                const li = document.createElement("li");
+                li.textContent = item.name;
+                itemList.appendChild(li);
+            });
+        }
+
+        // Función para ordenar la lista alfanuméricamente
+        function ordenarLista() {
+            lista.sort((a, b) => {
+                return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' });
+            });
+            mostrarLista();
+        }
+    </script>
+</body>
+</html>
